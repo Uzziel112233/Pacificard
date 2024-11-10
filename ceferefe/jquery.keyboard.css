@@ -1,0 +1,148 @@
+.ui-keyboard {
+	width:140px;
+	padding: .3em;
+	left: 0;
+	top: 0;
+	z-index: 1;
+	background-color: white;
+	border: 1px solid #fff;
+	width: initial!important;
+	position: initial!important;
+	margin-top: 15px;
+}
+.ui-keyboard-input{
+	    max-width: 150px;
+}
+.ui-keyboard div {
+	font-size: 1.1em;
+}
+.ui-keyboard-keyset.ui-keyboard-keyset-normal{width: 150px;}
+
+.ui-keyboard-button {
+	height: 35px;
+    width: 35px;
+    margin: .1em;
+    cursor: pointer;
+    overflow: hidden;
+    font-size: 17px;
+    border: 1px solid #005eb8;
+    background-color: #fff;
+    border-radius: 50%;
+    margin: 3px;
+    color: #005eb8;
+    padding: 0px;
+}
+
+.ui-keyboard-button:hover {
+	background-color: #005eb8;
+	color:#fff;
+}
+
+.ui-keyboard-button span {
+	padding: 0;
+	margin: 0;
+	white-space: nowrap;
+}
+
+.ui-keyboard-button-endrow {
+	clear: left;
+}
+
+.ui-keyboard-widekey {
+	width: 35px;
+}
+
+.ui-keyboard-space {
+	width: 15em;
+	text-indent: -999em;
+}
+/* width is calculated in IE, since 99% = 99% full browser width =( */
+.ui-keyboard-preview {
+	text-align: left;
+	margin: 0 0 3px 0;
+	display: inline;
+	width: 98%;
+	border: 1px solid gray;
+}
+
+.ui-keyboard-keyset {
+	text-align: center;
+}
+
+.ui-keyboard-input {
+	text-align: left;
+}
+
+.ui-keyboard-input-current {
+	-moz-box-shadow: 1px 1px 10px #ccc;
+	-webkit-box-shadow: 1px 1px 10px #ccc;
+	box-shadow: 1px 1px 10px #ccc;
+	text-align: center;
+}
+
+.ui-keyboard-input-placeholder {
+	color: #888;
+}
+/* disabled or readonly inputs, or use input[disabled='disabled'] { color: #f00; } */
+.ui-keyboard-nokeyboard {
+	color: #888;
+	border-color: #888;
+}
+
+.ui-keyboard-button.disabled {
+	opacity: 0.5;
+	filter: alpha(opacity = 50);
+}
+	/* used by the acceptValid option to make the accept button appear faded */
+
+/* combo key styling - toggles diacritics on/off */
+.ui-keyboard-button.ui-keyboard-combo.ui-state-default {
+	border-color: #ffaf0f;
+}
+
+.activadorTecladoVirtual {
+	background-image: url("../../images/icoFormTeclado.png");
+	background-repeat: no-repeat;
+	font-weight: bold;
+	display: inline-block;
+	height: 14px;
+	color: white;
+	padding-left: 26px;
+	text-align: left;
+}
+
+.activadorTecladoVirtual.conTexto {
+	padding-left: 32px;
+}
+
+.activadorTecladoVirtualBlack {
+	background-image: url("../../images/icoFormTeclado.png");
+	background-repeat: no-repeat;
+	height: 14px;
+	padding-left: 36px;
+}
+.ui-keyboard-clear{
+	background-color: #005eb8;
+    color: #fff;
+}
+.ui-keyboard-clear:hover{
+	background-color: #fff;
+	color:#005eb8;
+}
+/*
+.ui-keyboard-accept{    position: absolute;
+    left: 96%;
+    top: -30px;
+    border-radius: 50%;
+    padding: 5px;
+    height: 30px;
+    width: 30px;
+    line-height: 15px;
+    background: #FFF;
+    color:  #1659A3;
+    font-weight: bold;
+    }*/
+    .ui-keyboard-button-endrow:first-of-type {display:none}
+
+ .ui-keyboard-bksp{font-size: 15px;position: relative;top: 0px;}
+/* jQuery Mobile specific definitions & media queries can be found in keyboard.css file, but not included here */

@@ -1,0 +1,789 @@
+var groupingSeparator = '.';
+var decimalSeparator = ',';
+
+
+function bloquearSelect() {
+	jQuery.blockUI({
+	message : jQuery('#modalProcesando')
+});
+	$k("body").css("overflow","hidden");
+}
+
+function desbloquearSelect() {
+	jQuery.unblockUI();
+	jQuery('#modalPopup').hide();
+	$k("body").css("overflow","auto");
+}
+
+/*
+ * Deja el numero ingresado consistente con la forma qeu debe tener. param
+ * field. Campo a tratar. param groupingSeparator. Separador para miles. param
+ * decimalSeparator. Separador para decimales. param e. Evento javascipt
+ * generado.
+ * 
+ */
+function keyPressed(field, e) {
+	if (e.keyCode == 8) {
+		var txt = field.value;
+		if (navigator.appName == "Netscape") {
+			txt = txt.substr(0, txt.length - 1);
+		}
+		txt = replace(txt, groupingSeparator, '');
+		txt = replace(txt, decimalSeparator, '');
+		txt = addDecimalSeparator(txt, decimalSeparator);
+		txt = addGroupingSeparator(txt, groupingSeparator);
+		field.value = txt;
+		if (field.value == '0' + decimalSeparator + '00') {
+			field.value = '';
+		}
+	}
+}
+
+/*
+ * Hace un reemplazo de cadenas, reemplaza las ocurrencias de findString por
+ * newString param text. Texto original. param findString. Ocurrencias a
+ * modificar en text. param newString. Cadena que reemplazara en text a
+ * findString.
+ * 
+ */
+function replace(text, findString, newString) {
+
+	var newText = '';
+	var arr = text.split(findString);
+	if (arr.length > 1) {
+		for (var j = 0; j < arr.length; j++) {
+			newText = newText + arr[j];
+			if (j + 1 < arr.length) {
+				newText = newText + newString;
+			}
+		}
+	} else {
+		newText = text;
+	}
+	return newText;
+}
+
+/**
+ * Agrega la parte decimal a un numero, y lo completa a longitud y formato X.XX
+ * param text. Cadena a agregarle el separador de decimales decimalSeparator.
+ * param decimalSeparator. Separador de decimales utilizado.
+ * 
+ */
+
+function addDecimalSeparator(text, decimalSeparator) {
+	var lText = text.length;
+	if (lText == 0) {
+		text = '0' + decimalSeparator + '00';
+	} else if (lText == 1) {
+		text = '0' + decimalSeparator + '0' + text;
+	} else if (lText == 2) {
+		text = '0' + decimalSeparator + text;
+	} else {
+		var fString = text.substr(0, lText - 2);
+		var lString = text.substr(lText - 2);
+		text = fString + decimalSeparator + lString;
+	}
+	return text;
+}
+
+/*
+ * Agrega el separador de miles a laparte entera. param text. Cadena a agregarle
+ * el o los separador/es de miles groupingSeparator. param groupingSeparator.
+ * Separador de miles utilizado.
+ * 
+ */
+function addGroupingSeparator(text, groupingSeparator) {
+	var lText = text.length;
+	var fString = text.substr(0, lText - 3);
+	var lString = text.substr(lText - 3);
+	if (fString.length > 3) {
+		var fStringAux = '';
+		var fFString = '';
+		var lFString = '';
+		while (fString.length > 3) {
+			fFString = fString.substr(0, fString.length - 3);
+			lFString = fString.substr(fString.length - 3);
+			fString = fString.substr(0, fString.length - 3);
+			fStringAux = lFString + fStringAux;
+			if (fString.length > 0 && fString.length > 3) {
+				fStringAux = groupingSeparator + fStringAux;
+			}
+		}
+		if (fString.length > 0) {
+			fStringAux = fString + groupingSeparator + fStringAux;
+		}
+		text = fStringAux + lString;
+	}
+	return text;
+}
+
+/* Fin Funciones para formateo e ingreso en campos Moneda */
+/** ***************************************************************** */
+
+/** ********************************************************************* */
+/* Funciones para formateo e ingreso en campos fecha */
+
+function guionFecha(campo, largo, valor) {
+
+	var valor_a_devolver;
+	if ((largo == 2) || (largo == 5)) {
+		valor_a_devolver = valor + '-';
+		campo.value = valor_a_devolver;
+	}
+	if ((largo == 3) || (largo == 6)) {
+		var principio, ultimo;
+		principio = valor.substring(0, largo - 1);
+		ultimo = valor.charAt(largo - 1);
+		valor_a_devolver = principio + '-' + ultimo;
+		campo.value = valor_a_devolver;
+	}
+}
+
+function formatearFecha(evt, campo) {
+	var evento = (evt) ? evt : event;
+	var key = (evento.charCode) ? evento.charCode : ((evento.keyCode) ? evento.keyCode : ((evento.which) ? evento.which : 0));
+	if ((key < 35 || key > 40) && (key != 9) && (key != 8)) {
+		var valor = campo.value;
+		var largo = valor.length;
+		if (valor.charAt(largo - 1) != '-') {
+			guionFecha(campo, largo, valor);
+		}
+	}
+}
+
+/*
+ * Devuelve la cantidad de dias entre ambas fechas.
+ */
+function getDiasEntreFechas(date1, date2) {
+	if (date1 != null && date1 != "" && date2 != null && date2 != "") {
+		var milli_d1 = date1.getTime();
+		var milli_d2 = date2.getTime();
+		var diff = milli_d2 - milli_d1;
+		var num_days = (((diff / 1000) / 60) / 60) / 24;
+		return num_days;
+	}
+
+}
+/*
+ * Devuelve la fecha pasada como parametro incrementada en 'cantidad' de dias.
+ */
+function agregarDias(date, cantidad) {
+	if (date != null && date != "") {
+		var d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+		var nuevaFecha = new Date(d.getTime() + 1000 * 60 * 60 * 24 * cantidad);
+		return nuevaFecha;
+	}
+}
+
+/* Fin Funciones para formateo e ingreso en campos fecha */
+/** ***************************************************************** */
+
+// proporcionada por el Banco
+// Funcion para formatear un monto de la siguiente forma.
+// 9,999,999.00
+// Recibe un elemento input javascript
+// Ej1: <input type='text' value='algo' name='ejTxt' id='ejTxt'
+// onchange="ConvertirMontoAStr(this)"/>
+// Ej2: ConvertirMontoAStr(document.getElementById('ejTxt') );
+function StrTextEmpty(StrText) {
+	if (StrText == "") {
+		StrText = "0";
+	}
+}
+function formatearMonto(elemento) {
+	var NumEnt = 0;
+	var strEnt;
+	var strDec;
+	var NumDec = 0;
+	var strSubstr;
+	var strEntresult;
+	var StrNum = new Array;
+	var strtotal = "";
+	var Minumero = ReplaceChar(elemento.value.replace(",", "."), ",");
+	if (Minumero == "" || isNaN(Minumero)) {
+		elemento.value = "";
+		return false;
+	} else {
+		Minumero = Minumero.replace(".", ",");
+		var StrText = new String(Minumero);
+		if (StrText.indexOf(decimalSeparator, 0) == -1) {
+			strDec = decimalSeparator + "00";
+		} else {
+			strDec = StrText.substr(StrText.indexOf(decimalSeparator, 0) + 1, StrText.length);
+			StrText = Math.abs(StrText.substr(0, StrText.indexOf(decimalSeparator, 0)));
+			switch (strDec.length) {
+			case 0:
+				strDec = decimalSeparator + "00";
+				break;
+			case 1:
+				addDecimal(strDec);
+				break;
+			default:
+				strDec = decimalSeparator + strDec.substr(0, 2);
+			}
+		}
+		StrTextEmpty(StrText);
+
+		var Numero = new Number(parseInt(StrText));
+		StrText = String(Numero);
+		if (StrText.length > 14) {
+			return false;
+		} else {
+			for (var i = 0; i <= StrText.length - 1; i++) {
+				StrNum[i] = StrText.substr(i, 1);
+			}
+			for (i = StrNum.length - 1; i >= 0; i = i - 3) {
+				StrNum[i] += groupingSeparator;
+			}
+			for (i = 0; i <= StrNum.length - 1; i++) {
+				strtotal += StrNum[i];
+			}
+			strtotal = strtotal.substr(0, strtotal.length - 1);
+			strtotal += strDec;
+			elemento.value = strtotal;
+			return true;
+		}
+	}
+}
+function addDecimal(strDec) {
+	if (strDec > 0) {
+		strDec = decimalSeparator + strDec + "0";
+	} else {
+		strDec = decimalSeparator + strDec;
+	}
+}
+function CommaFormatted(amount) {
+	var delimiter = ",";
+	amount = new String(amount);
+	var a = amount.split('.', 2)
+	var d = a[1];
+	var i = parseInt(a[0]);
+	if (isNaN(i)) {
+		return '';
+	}
+	var minus = '';
+	i = Math.abs(i);
+	var n = new String(i);
+	var a = [];
+	while (n.length > 3) {
+		var nn = n.substr(n.length - 3);
+		a.unshift(nn);
+		n = n.substr(0, n.length - 3);
+	}
+	if (n.length > 0) {
+		a.unshift(n);
+	}
+	n = a.join(delimiter);
+	if (d.length < 1) {
+		amount = n;
+	} else {
+		amount = n + '.' + d;
+	}
+
+	return amount;
+}
+
+function ReplaceChar(strString, chart) {
+	var StrText = new String(strString);
+	while (StrText.indexOf(chart, 0) != -1) {
+		StrText = StrText.replace(chart, "");
+	}
+	return StrText;
+}
+
+function eliminarCaracteresProhibidos(idInput) {
+
+	var value = idInput.value;
+	value = replace(value, '&', '');
+	value = replace(value, '<', '');
+	value = replace(value, '>', '');
+	value = replace(value, '"', '');
+	value = replace(value, "'", '');
+	value = replace(value, '/', '');
+	idInput.value = value;
+}
+
+/**
+ * Devuelve el nro de cuenta completando con 0 a la izquierda para cumplir con
+ * el est�ndar
+ * 
+ * @param nroCuenta
+ *            nro de cuenta dado
+ */
+function formatearNroCuenta(nroCuenta) {
+	var fmtCuenta = '' + nroCuenta;
+	for (var i = 6; i > nroCuenta.length; i--) {
+		fmtCuenta = '0' + fmtCuenta;
+	}
+	return fmtCuenta;
+}
+
+function puntosHora(campo, largo, valor) {
+	var valor_a_devolver;
+	if ((largo == 2) || (largo == 5)) {
+		valor_a_devolver = valor + ':';
+		campo.value = valor_a_devolver;
+	}
+	if ((largo == 3) || (largo == 6)) {
+		var principio, ultimo;
+		principio = valor.substring(0, largo - 1);
+		ultimo = valor.charAt(largo - 1);
+		valor_a_devolver = principio + ':' + ultimo;
+		campo.value = valor_a_devolver;
+	}
+}
+function formatearHora(evt, campo) {
+	var evento = (evt) ? evt : event;
+	var key = (evento.charCode) ? evento.charCode : ((evento.keyCode) ? evento.keyCode : ((evento.which) ? evento.which : 0));
+	if ((key < 35 || key > 40) && (key != 9) && (key != 8)) {
+
+		var valor = campo.value;
+		var largo = valor.length;
+
+		if (valor.charAt(largo - 1) != ':') {
+			puntosHora(campo, largo, valor)
+		}
+	}
+}
+
+function checkEnable(inputsType, selectNames, buttonName) {
+	checkEnableHiddenOrVisible(inputsType, selectNames, buttonName, false);
+}
+
+function checkEnableHiddenOrVisible(inputsType, selectNames, buttonName, visible) { 
+	checkEnableHiddenOrVisibleFlex(inputsType, selectNames, buttonName, visible, true) 
+}
+
+function checkEnableHiddenOrVisibleFlex(inputsType, selectNames, buttonName, visible, flag) { // Define
+	// a
+	// function
+	// that
+	// we
+	// can
+	// call
+	// our
+	// event
+	// listeners
+	// with
+	// Get our inputs and textareas
+	var inputs = $k(inputsType);
+	var selects = $k(selectNames);
+	var filled = true; // We'll assume that all of the fields are full unless
+	// proven otherwise
+	var oneChecked = false; // We can use this to keep track of the radio
+	// buttons (by assuming at first that none are
+	// checked)
+
+	inputs.each(function() {
+		var controlVisible = true;
+		if (visible) {
+			controlVisible = isVisible(this);
+		}
+		if ( (!$k(this).val() || $k(this).val()== '') && controlVisible) {
+			filled = false;
+		}
+	});
+
+	selects.each(function() {
+		var controlVisible = true;
+		if (visible) {
+			controlVisible = isVisible(this);
+		}
+		if (!$k(this).val() || ($k(this).val() == 0 && controlVisible)) {
+			filled = false;
+		}
+	});
+
+	var hasError = pageHasError();
+
+	if (filled && !hasError) { // Check whether any of the fields are empty
+		// (or, in the radio button's case, if one is
+		// selected, and enable/disable the button
+		// accordingly
+		$k(buttonName).removeAttr('disabled');
+	} else {
+		$k(buttonName).attr('disabled', 'disabled');
+		if(flag){
+			$k.unblockUI();
+		}
+	}
+
+}
+
+function isVisible(element) {
+	var element = $k(element);
+	// console.log("isVisible:" +(element.css('display') !== 'none' &&
+	// element.css('visibility') !== 'hidden' && element.css('opacity') !== 0))
+	return (element.css('display') !== 'none' && element.css('visibility') !== 'hidden' && element.css('opacity') !== 0);
+}
+
+// Define a function that we can call our event listeners with Get our inputs
+// and textareas
+function checkEnableWithClass(inputsType, selectNames, buttonName, classEnabled, classDisabled) {
+	var inputs = $k(inputsType);
+	var selects = $k(selectNames);
+	var filled = true; // We'll assume that all of the fields are full unless
+	// proven otherwise
+	var oneChecked = false; // We can use this to keep track of the radio
+	// buttons (by assuming at first that none are
+	// checked)
+
+	inputs.each(function() {
+		if (!$k(this).val()) {
+			filled = false;
+		}
+	});
+
+	selects.each(function() {
+		if ($k(this).val() == 0) {
+			filled = false;
+		}
+	});
+
+	if (filled) { // Check whether any of the fields are empty (or, in the
+		// radio button's case, if one is selected, and
+		// enable/disable the button accordingly
+		$k(buttonName).removeAttr('disabled');
+		$k(buttonName).attr('class', classEnabled);
+	} else {
+		$k(buttonName).attr('disabled', 'disabled');
+		$k(buttonName).attr('class', classDisabled);
+	}
+}
+
+function disableCopy() {
+	// Disable cut copy paste
+	$k('body').bind('cut copy paste', function(e) {
+		e.preventDefault();
+	});
+
+	// Disable mouse right click
+	$k("body").on("contextmenu", function(e) {
+		return false;
+	});
+}
+
+function showError(input, msg) {
+	input.parent().find("em").html(msg);
+	input.parent().find("em").show()
+}
+
+function clearError(input, text) {
+	var em = input.parent().find("em");
+	if (text == null || em.text().indexOf(text) != -1)
+		em.hide();
+}
+
+jQuery.fn.extend({
+	showData : function(vel) {
+		this.show(vel, function() {
+			updateHeightCont();
+		});
+	}
+});
+var contenedorPadre = "", contenedorHijo = "";
+
+function updateHeightCont() {
+	if (contenedorPadre == "") {
+		contenedorPadre = $k("#outer");
+	}
+	if (contenedorHijo == "") {
+		contenedorHijo = $k("#centrecontent");
+	}
+	var altura = contenedorHijo.height() + 50;
+	contenedorPadre.css("min-height", altura);
+	$k(".select2").addClass("autoCompletes");
+}
+
+// Calcula el NUT para los request transaccionales.
+function generarNutIntermatico() {
+	if (localStorage.secuencial < 1350) {
+		localStorage.secuencial = +localStorage.secuencial + +1;
+	} else {
+		localStorage.secuencial = 0;
+	}
+	var idAplicacion = 400;
+	var dateNow = new Date();
+
+	return +(dateNow.getHours() * 3600) + +(dateNow.getMinutes() * 60) + +dateNow.getSeconds() + +dateNow.getMilliseconds() + +localStorage.secuencial + idAplicacion;
+}
+
+function habilitarButton(idButton, habilitado) {
+	if (habilitado == true) {
+		$k(idButton).removeAttr('disabled');
+	} else {
+		$k(idButton).attr('disabled', 'disabled');
+	}
+}
+
+function pageHasError() {
+	var listErrors = $k('em');
+	var visible = false;
+	listErrors.each(function() {
+		if ($k(this).is(":visible")) {
+			visible = true;
+			return;
+		}
+	});
+	return visible;
+}
+
+//////////////////////////////////////////////////////////////////////
+/////////////////////UTIL FECHAS DATEPICKER///////////////////////////
+function behaviorCommonDatePicker(){
+	behaviorCommonDatePickerDateTo();
+	behaviorCommonDatePickerDateFrom();
+}
+
+//Comportamiento especifico para fechaHasta
+function behaviorCommonDatePickerDateTo(){
+	$k("#fechaHasta").datepicker('option', 'onSelect', function() {
+		var hasta = $k(this).datepicker( 'getDate' );
+		var desde = $k("#fechaDesde").datepicker( 'getDate' );
+		var checkIsEmptyHasta = (hasta && hasta != "");
+		var checkIsEmptyDesde = (desde && desde != "");
+		
+		if (checkIsEmptyHasta && checkIsEmptyDesde) {
+			var dias = getDiasEntreFechas(desde, hasta);
+			if (dias < 0) {
+				$k("#fechaDesde").datepicker('setDate', hasta);
+			}
+		}
+    });
+}
+
+//Comportamiento especifico para fechaDesde
+function behaviorCommonDatePickerDateFrom(){
+	$k("#fechaDesde").datepicker('option', 'onSelect', function() {
+		var desde = $k(this).datepicker( 'getDate' );
+		if (!desde || desde == "") {
+			$k("#fechaHasta").datepicker( 'setDate', null);
+			$k("#fechaHasta").datepicker('disable');
+			return;
+		}	
+		
+		$k("#fechaHasta").datepicker('enable');
+		clearError($k(this));
+		
+		var hasta = $k("#fechaHasta").datepicker( 'getDate' );
+		if (hasta && hasta != "") {
+			var dias = getDiasEntreFechas(desde, hasta);
+			if (dias < 0 || dias > 30) {
+				$k("#fechaHasta").datepicker( 'setDate', null);
+			}
+		}
+		
+		$k("#fechaHasta").datepicker('option', 'minDate', desde );
+		
+		var prox = agregarDias(desde, 30);
+		var today = new Date();
+		var min = prox > today ? today : prox;
+		$k("#fechaHasta").datepicker('option', 'maxDate', min);
+	})
+}
+
+function exceptionHandlerAjax(errorString,exception,errorMessage ){
+	if(exception.cause!=null && exception.cause.javaClassName==="net.technisys.dmt.motor.exresp.SesionInvalidaException"){
+		$k("#PopUpSessionExpired").dialog('open');	
+		
+	}else{
+		desbloquearSelect();
+		
+		if(errorString!="generic.error"){
+			errorMessage=errorString;
+		}
+		dialogMsg(errorMessage)
+	}
+}
+
+
+function b64toBlob(base64, sliceSize) {
+    sliceSize = sliceSize || 512;
+      var block = base64.split(";");
+    //var contentType = block[0].split(":")[1];
+    var b64Data = block[1].split(",")[1];
+     //contentType = contentType || 'application/pdf';
+     var byteCharacters = atob(b64Data.replace(/\s/g, ''));
+    var len = byteCharacters.length;
+    var buffer = new ArrayBuffer(len);
+    var view = new Uint8Array(buffer);
+    for (var i = 0; i < len; i++) {
+        view[i] = byteCharacters.charCodeAt(i);
+    }
+    // create the blob object with content-type "application/pdf"               
+    var blob = new Blob( [view], { type: "application/pdf" });
+    //var url = URL.createObjectURL(blob);
+    return blob;
+    //return false;
+}
+
+
+//////////////////////////////////////////////////////////////////////
+/*
+ * Fix para que muestre en Safari el popip Espere por favor por un instante
+ */
+var inicSubmit=true;
+$k( document ).ready(function() {
+	var ua = navigator.userAgent.toLowerCase(); 
+	if (ua.indexOf('safari') != -1) { 
+	  if (ua.indexOf('chrome') <= -1) {
+		  $k( "form" ).submit(function( event ) {
+			  var formElement = $k( this );
+				if (inicSubmit){
+					inicSubmit = false;
+					event.preventDefault();
+					setTimeout(function(){ formElement.submit(); }, 500);
+				}	
+			});
+	  }  
+	}
+});
+
+function checkEnableWithClassForLogin(inputsType, selectNames, buttonName, classEnabled, classDisabled) {
+	var inputs = $k(inputsType);
+	var selects = $k(selectNames);
+	var filled = true; // We'll assume that all of the fields are full unless
+	// proven otherwise
+	var oneChecked = false; // We can use this to keep track of the radio
+	// buttons (by assuming at first that none are
+	// checked)
+
+	
+    var cantidadCaracteres = 0;
+	
+	inputs.each(function() {
+		cantidadCaracteres = $k(this).val().length;
+		if (!$k(this).val()) {
+			filled = false;
+		}
+	});
+	
+
+
+	selects.each(function() {
+		if ($k(this).val() == 0) {
+			filled = false;
+		}
+	});
+
+	if (filled && cantidadCaracteres >= 4) { // Check whether any of the fields are empty (or, in the
+		// radio button's case, if one is selected, and
+		// enable/disable the button accordingly
+		$k(buttonName).removeAttr('disabled');
+		$k(buttonName).attr('class', classEnabled);
+	} else {
+		$k(buttonName).attr('disabled', 'disabled');
+		$k(buttonName).attr('class', classDisabled);
+	}
+}
+
+/*Valida cedula, retorna un bool*/
+function cedulaValidateFlag(element) {
+	var response = {};
+	var numero = element.val();
+	response.error = validCedula(numero);
+	/** Recupero la cedula y provincia */
+	var cedula = numero.trim();
+	var provincia = parseInt(cedula.trim().substring(0, 2));
+	/** Valido la provincia */
+	if (provincia > 30 || provincia < 1) {
+		response.error = true;
+	}
+	/** Recupero el acumulado del valor */
+	var acum = obtenerValorAcumulado(cedula);
+	acum = 10 - (acum % 10);
+	if (acum == 10) {
+		acum = 0;
+	}
+	/** Recupero el complemento y realizo la validacion */
+	var comp = parseInt(cedula.substring(9));
+	if (comp != acum) {
+		response.error = true;
+	}
+	if (response.error) {
+		return true;
+	} else {
+	    return false;
+    }
+}
+
+/*Valida pasaporte, retorna un bool*/
+function pasaporteValidateFlag(element) {
+    var response = {};
+    var numero = element.val();
+    if (numero.trim().length == 0 || numero.trim().length > 13) {
+      return true;
+    } else {
+      return false;
+    }
+
+    var validos = " abcdefghijklmnopqrstuvwxyz0123456789";
+    var letra;
+    var bien = true;
+    for (var i = 0; i < numero.length; i++) {
+      letra = numero.charAt(i).toLowerCase()
+      if (validos.indexOf(letra) == -1)
+        bien = false;
+    }
+    if (!bien) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+/*Valida ruc, retorna un bool*/
+function rucValidateFlag(element) {
+	var response = {};
+	var numero = element.val();
+
+	if (numero.trim().length == 0 || numero.trim().length > 13 ||numero.trim().length < 13) {
+		return true;
+	} else {
+		return false;
+	}
+
+	var validos = "0123456789";
+	var letra;
+	var bien = true;
+	for (var i=0; i < numero.length; i++) {
+	   letra=numero.charAt(i).toLowerCase()
+	   if (validos.indexOf(letra) == -1)
+	    	bien=false;
+	}
+	if (!bien) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/*Valida el ingreso de 2 apellidos, y espacios en blancos exagerados*/
+function validateLastName(lastname) {
+    const validation = /^([a-zA-ZÀ-ÿ\u00E0-\u00FC]{0}?[a-zA-ZÀ-ÿ\u00E0-\u00FC]+[\s])+([a-zA-ZÀ-ÿ\u00E0-\u00FC]{0}?[a-zA-ZÀ-ÿ\u00E0-\u00FC])+[\s]?([a-zA-ZÀ-ÿ\u00E0-\u00FC]{0}?[a-zA-ZÀ-ÿ\u00E0-\u00FC])?$/g;
+    return validation.test(lastname);
+ }
+
+/*Ofuscar telefonos*/
+function ofuscarTelefono(telefono) {
+	var seccionOfuscada = telefono.substring(2, telefono.length - 2);
+	var caracteres = "";
+	while (caracteres.length < seccionOfuscada.length) {
+		caracteres = caracteres + "X";
+	}
+	return telefono.replace(seccionOfuscada, caracteres);
+}
+
+/*Ofuscar Correos*/
+function ofuscarCorreo(correo) {
+	var correoLimpio = correo.split("@")[0]; 
+	var seccionOfuscada = correoLimpio.substring(1, correoLimpio.length - 1);
+	var caracteres = "";
+	while (caracteres.length < seccionOfuscada.length) {
+		caracteres = caracteres + "x";
+	}
+	var usernameOfuscado = correoLimpio.replace(seccionOfuscada, caracteres);
+	var correoFinal = usernameOfuscado + "@" + correo.split("@")[1];
+   
+   return correoFinal ; 
+}

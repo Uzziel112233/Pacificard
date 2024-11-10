@@ -1,0 +1,196 @@
+fieldset.formularioError {
+	border: none;
+	clear: left;
+	width: auto;
+	_width: 100%;
+	overflow: hidden;
+	background-color: #F1F1F1;
+	font-weight: normal;
+	font-size:11px;
+	color: #22323F;
+}
+.techDialogErrorDiv{
+margin-left:5px;
+margin-right:5px;
+width:650px;
+
+font-size: 10px;
+font-weight: bold;
+}
+.labelError{
+	color:#003479;
+}
+.labelSuccess{
+	color:#000000;
+}
+
+
+fieldset.mensaje {
+	border: none;
+	clear: left;
+	width: auto;
+	margin: 1em 1em 1em 1em;
+	*margin: 1.5em 1.5em 1.5em 1.5em;
+	padding: 0 0 0 0;
+	*padding: 1em 0 0 0;
+
+	background: url(../../images/IN/mensajesInfo.gif) no-repeat scroll 2% center;
+	background-color: #b7aaba;
+	font-weight: bold;
+	color: #ffffff;
+}
+
+fieldset.mensajeAlerta {
+	border: none;
+	clear: left;
+	width: auto;
+	margin: 1em 1em 1em 1em;
+	*margin: 1.5em 1.5em 1.5em 1.5em;
+	padding: 0 0 0 0;
+	*padding: 1em 0 0 0;
+
+	background: url(../../images/IN/mensajesAlerta.gif) no-repeat scroll 2% center;
+	background-color: #b7aaba;
+	font-weight: bold;
+	color: #ffffff;
+}
+
+fieldset.mensajeError {
+	border: none;
+	clear: left;
+	width: auto;
+	margin: 1em 1em 1em 1em;
+	*margin: 1.5em 1.5em 1.5em 1.5em;
+	padding: 0 0 0 0;
+	*padding: 1em 0 0 0;
+
+	background: url(../../images/IN/mensajesError.gif) no-repeat scroll 2% center;
+	background-color: #b7aaba;
+	font-weight: bold;
+	color: #ffffff;
+}
+
+#divMensajeTagError{
+	height:45px;
+	width:100%;
+	margin-right:1em;
+	vertical-align: bottom;
+	padding-left: 55px;
+	padding-top:15px;
+	padding-bottom:10px;
+	font-weight: bold;
+	color:#2a2a2a;
+}
+
+#divMensajeConfirmacion{
+	height:40px;
+	width:80%;
+	margin-left:5%;
+	margin-top: 15px;
+	vertical-align: bottom;
+	padding-left: 55px;
+	padding-top:12px;
+	padding-bottom:10px;
+	font-weight: bold;
+	color: white;
+	background-color: #F1F1F1;
+}
+
+
+#divMensajeInformacion{
+	height:40px;
+	width:80%;
+	margin-left:5%;
+	vertical-align: bottom;
+	padding-left: 55px;
+	padding-top:8px;
+	padding-bottom:10px;
+	font-weight: bold;
+	color: white;
+	background-color: #808080;
+}
+
+#divMensajeInformacion ul li {
+	padding-left: 54px;
+	margin-top: -42px;
+	color: white;
+}
+
+.ERROR{
+	background: url(../../images/resultado/ico_error.html) no-repeat top left;
+	min-height: 45px;
+	background-color: #FFFFFF;
+	padding-bottom:2px;
+	width: 100%;
+}
+
+.WARNING{
+	background: url(../../images/resultado/ico_alerta.html) no-repeat top left;
+	min-height: 45px;
+	background-color: #FFFFFF;
+	padding-bottom:2px;
+}
+
+.INFO_NOTA{
+	background: url(../../images/resultado/ico_alerta.html) no-repeat top left;
+	min-height: 45px;
+	background-color: grey;
+	padding-bottom:2px;
+	color:red;
+	text-align: top;
+}
+
+.INFO{
+	background: url(../../images/resultado/ico_info.html) no-repeat top left;
+	min-height: 45px;
+	background-color: grey;
+	padding-bottom:2px;
+	color:purple;
+}
+
+.SUCCESS{
+	background: url(../../images/resultado/ico_ok.html) no-repeat top left;
+	min-height: 45px;
+	background-color: #FFFFFF;
+	padding-bottom:2px;
+	color:black;
+}
+
+.liError{
+	text-align: left;
+	font-weight: bold;
+	color: #2a2a2a;
+	padding-left: 60px;
+	padding-bottom: 5px;
+	padding-top: 15px;
+	vertical-align: middle;
+}
+
+#errorDivTag{
+	padding-bottom: 10px;
+}
+
+/* Error interno / página expirada */
+
+div.unhandledErrorBox {
+	padding: 0px 5%;
+	font-weight: bold;
+	width: 90%;
+	line-height: 1.3em;
+	color: black;
+}
+
+.unhandledErrorBox h1 {
+	font-size: 13px;
+	color: #931D1A;
+	font-weight: bold;
+}
+
+
+.unhandledErrorBox label {
+	font-weight: bold;
+}
+
+.unhandledErrorBox span.valor {
+	font-family: monospace;
+}
